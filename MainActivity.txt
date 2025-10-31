@@ -1,0 +1,26 @@
+MainActivity
+
+
+public class MainActivity extends AppCompatActivity {
+    TextView tvSaudacao;
+    EditText edtNome;
+    Button btnSaudacao;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        //Associamos o codigo java ao XML
+        edtNome = (EditText) findViewById(R.id.txtNome);
+        tvSaudacao = (TextView) findViewById(R.id.lblSaudacao);
+        btnSaudacao = (Button) findViewById(R.id.cmdSaudacao);
+        btnSaudacao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String saudacao="";
+                saudacao = "Seja bem-vindo "+edtNome.getText()+ " ao curso de PDM!";
+                tvSaudacao.setText(saudacao);
+            }
+        });
+    }
+}

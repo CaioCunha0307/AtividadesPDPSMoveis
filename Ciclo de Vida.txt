@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CicloDeVida"
+        tools:targetApi="31">
+        <activity
+            android:name=".SegundaActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+
+
+package com.example.ciclodevida;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity extends AppCompatActivity {
+    Button btnAbrirSegundaActivity;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+
+        btnAbrirSegundaActivity=(Button) findViewById(R.id.cmdAbrirSegundaActivity);
+        btnAbrirSegundaActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intencao = new Intent(MainActivity.this, SegundaActivity2.class);
+                startActivity(intencao);
+
+            }
+        });
+        Log.i("Ciclo de Vida - T1", "Método OnCreat ativado");
+
+        };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("Ciclo de Vida - T1", "Método OnStart ativado");
+    }
+    protected void onResume() {
+        super.onResume();
+        Log.i("Ciclo de Vida - T1", "Método OnResume ativado");
+    }
+    protected void onPause() {
+        super.onPause();
+        Log.i("Ciclo de Vida - T1", "Método OnPause ativado");
+    }
+    protected void onRestart() {
+        super.onRestart();
+        Log.i("Ciclo de Vida - T1", "Método OnRestart ativado");
+    }
+    protected void onStop() {
+        super.onStop();
+        Log.i("Ciclo de Vida - T1", "Método OnStop ativado");
+    }
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("Ciclo de Vida - T1", "Método OnDestroy ativado");
+    }
+}
+
+package com.example.ciclodevida;
+
+import android.os.Bundle;
+import android.util.Log;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class SegundaActivity2 extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_segunda2);
+        Log.i("Ciclo de Vida - T2", "Método OnCreat ativado");
+
+    }
+    protected void onStart() {
+        super.onStart();
+        Log.i("Ciclo de Vida - T2", "Método OnStart ativado");
+    }
+    protected void onResume() {
+        super.onResume();
+        Log.i("Ciclo de Vida - T2", "Método OnResume ativado");
+    }
+    protected void onPause() {
+        super.onPause();
+        Log.i("Ciclo de Vida - T2", "Método OnPause ativado");
+    }
+    protected void onRestart() {
+        super.onRestart();
+        Log.i("Ciclo de Vida - T2", "Método OnRestart ativado");
+    }
+    protected void onStop() {
+        super.onStop();
+        Log.i("Ciclo de Vida - T2", "Método OnStop ativado");
+    }
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("Ciclo de Vida - T2", "Método OnDestroy ativado");
+    }
+}
