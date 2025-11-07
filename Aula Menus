@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuSalvar"
+        android:icon="@drawable/baseline_save_24"
+        android:title="Salvar"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menuExcluir"
+        android:icon="@drawable/baseline_auto_delete_24"
+        android:title="Excluir" />
+    <item
+        android:id="@+id/menuPesquisar"
+        android:icon="@drawable/baseline_back_hand_24"
+        android:title="Pesquisar"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menuSair"
+        android:title="Sair" />
+</menu>
+
+
+package com.example.menuopes;
+
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_principal, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menuSalvar) {
+            Toast.makeText(this, "Item de menu Salvar", Toast.LENGTH_SHORT).show();
+        } else if (item.getItemId() == R.id.menuExcluir) {
+            Toast.makeText(this, "Item de menu Excluir", Toast.LENGTH_SHORT).show();
+        } else if (item.getItemId() == R.id.menuPesquisar) {
+            Toast.makeText(this, "Item de menu Pesquisar", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Toast.makeText(this, "Item de menu Sair", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+}
+
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MenuOpções" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.MenuOpções" parent="Base.Theme.MenuOpções" />
+</resources>
