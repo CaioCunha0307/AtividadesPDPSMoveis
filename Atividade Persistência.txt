@@ -1,0 +1,231 @@
+14/11/2025
+
+Persistência DbHelper
+
+
+package com.example.contatosads25.persistencia;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import androidx.annotation.Nullable;
+
+public class DbHelper extends SQLiteOpenHelper {
+    public static int VERSION=1;
+    public static String NOME_DB="DB_SEUBANCO";
+    public static String TABELA_CONTATO="contato";
+
+    public DbHelper(@Nullable Context context) {
+        super(context,NOME_DB,null,VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        String sql = "CREATE TABLE IF NOT EXISTS "+TABELA_CONTATO
+                     +" (id INTERGER PRIMARY KEY AUTOINCREMENT," +
+                      "nomeContato TEXT NOT NULL, telContato TEXT);";
+        try{
+            db.execSQL(sql);
+            Log.i("InfoDB", "Tabela criada com sucesso");
+
+        } catch (Exception e){
+            Log.i("InfoDB","Erro ao criar a tabela - Erro"+e.getMessage().toString());
+        }
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            String sql = "DROP TABLE IF EXISTS "+TABELA_CONTATO+";";
+            try {
+                db.execSQL(sql);
+                onCreate(db);
+                Log.i("InfoDB", "Tabela atualizada com sucesso");
+            }catch (Exception e){
+                Log.i("InfoDB", "Erro ao atualizar a tabela. Erro"+ e.getMessage().toString());
+
+            }
+
+    }
+}
+
+
+Persistência IContatoDAO
+
+
+package com.example.contatosads25.persistencia;
+
+import com.example.contatosads25.model.Contato;
+
+import java.util.List;
+
+public interface IContatoDAO {
+    public boolean salvar(Contato contato);
+    public boolean atualizar(Contato contato);
+    public boolean deletar(Contato contato);
+
+    public List<Contato> listar();
+
+
+}
+
+
+
+Persistência ContatoDAO
+
+
+
+package com.example.contatosads25.persistencia;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import com.example.contatosads25.model.Contato;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class ContatoDAO implements IContatoDAO{
+    private final String TABELA_EMISSORES = "Contato";
+    private SQLiteDatabase escreve;
+    private SQLiteDatabase le;
+
+    public ContatoDAO(Context context) {
+        DbHelper db = new DbHelper(context);
+        escreve = db.getWritableDatabase();
+        le = db.getReadableDatabase();
+
+    }
+
+    @Override
+    public boolean salvar(Contato contato) {
+        ContentValues cv = new ContentValues();
+        cv.put("nomeContato", contato.getNomeContato());
+        cv.put("telContato", contato.getTelContato());
+
+        try{
+            escreve.insert(DbHelper.TABELA_CONTATO,null,cv);
+            Log.i("InfoDB", "Sucesso ao Salvar o registro");
+
+        } catch (Exception e) {
+            Log.i("InfoDB", "Sucesso ao Salvar o registro");
+            return false;
+
+        }
+        return true;
+    }
+
+    @Override
+    public boolean atualizar(Contato contato) {
+        ContentValues cv = new ContentValues();
+        cv.put("nomeContato", contato.getNomeContato());
+        cv.put("telContato", contato.getTelContato());
+        try{
+            String[] args = {contato.getId().toString()};
+            escreve.update(DbHelper.TABELA_CONTATO,cv,"id=?",args);
+            Log.i("InfoDB", "Sucesso ao Atualizar o registro");
+
+        } catch (Exception e) {
+            Log.i("InfoDB", "Erro ao Atualizar o registro");
+            return false;
+
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deletar(Contato contato) {
+        try{
+            String[] args = {contato.getId().toString()};
+
+            escreve.delete(DbHelper.TABELA_CONTATO,"id=?",args);
+            Log.i("InfoDB", "Sucesso ao Atualizar o registro");
+
+        } catch (Exception e) {
+            Log.i("InfoDB", "Erro ao Atualizar o registro");
+            return false;
+
+        }
+        return true;
+    }
+
+    @Override
+    public List<Contato> listar() {
+        List<Contato> lstContato = new ArrayList<>();
+        String sql = "SELECT * FROM "+DbHelper.TABELA_CONTATO+";";
+        Cursor cursor=null;
+        try{
+            cursor = le.rawQuery(sql,null);
+            // Obter os indices da colunas ao invés
+            int idIndex = cursor.getColumnIndexOrThrow("id");
+            int nomeIndex = cursor.getColumnIndexOrThrow("nomeContato");
+            int telIndex = cursor.getColumnIndexOrThrow("telContato");
+            while (cursor.moveToNext()){
+                Contato contato = new Contato();
+                contato.setId(cursor.getLong(idIndex));
+                contato.setNomeContato(cursor.getString(nomeIndex));
+                contato.setTelContato(cursor.getString(telIndex));
+                lstContato.add(contato);
+            }
+            Log.i("InfoDB", "Sucesso ao listar os registros");
+
+        } catch (Exception e){
+            Log.i("InfoDB", "Erro ao listar os registros");
+
+        }
+        return lstContato;
+
+
+    }
+}
+
+
+
+Model Contato
+
+
+package com.example.contatosads25.model;
+
+import java.io.Serializable;
+
+public class Contato implements Serializable {
+    private Long id;
+    private String nomeContato;
+    private String telContato;
+
+
+    public Contato() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNomeContato() {
+        return nomeContato;
+    }
+
+    public void setNomeContato(String nomeContato) {
+        this.nomeContato = nomeContato;
+    }
+
+    public String getTelContato() {
+        return telContato;
+    }
+
+    public void setTelContato(String telContato) {
+        this.telContato = telContato;
+    }
+}
+
